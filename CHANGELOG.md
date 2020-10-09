@@ -6,9 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-## Added
+### Added
 - Add support for keyword-only arguments without default values in `#[pyfunction]`. [#1209](https://github.com/PyO3/pyo3/pull/1209)
 - Add a wrapper for `PyErr_CheckSignals()` as `Python::check_signals()`. [#1214](https://github.com/PyO3/pyo3/pull/1214)
+
+### Removed
+- Removed `PyUnicode_AsUnicodeCopy`, `PyUnicode_GetMax`, `_Py_CheckRecursionLimit`, `PyObject_AsCharBuffer`, `PyObject_AsReadBuffer`, `PyObject_CheckReadBuffer` and `PyObject_AsWriteBuffer` which have been removed in python 3.10
 
 ## [0.12.1] - 2020-09-16
 ### Fixed
