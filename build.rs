@@ -657,10 +657,21 @@ fn main() -> Result<()> {
         // TODO: Find out how we can set -undefined dynamic_lookup here (if this is possible)
     }
 
-    let env_vars = ["LD_LIBRARY_PATH", "PATH", "PYTHON_SYS_EXECUTABLE", "LIB"];
+    let env_vars = ["LD_LIBRARY_PATH", "PYTHON_SYS_EXECUTABLE", "LIB"];
 
     for var in env_vars.iter() {
         println!("cargo:rerun-if-env-changed={}", var);
+    }
+
+    if env::var("PYO3_PYTHON").is_none() {
+        // When PYO3_PYTHON is not used, PYTHON_SYS_EXECUTABLE has the highest priority.
+        // Let's watch it.
+        println!("cargo:rerun-if-env-changed=PYTHON_SYS_EXECUTABLE");
+        if env::var("PYTHON_SYS_EXECUTABLE") {
+            // When PYTHON_SYS_EXECUTABLE is also not used, then we use PATH.
+            // Let's watch this, too.
+            println!("cargo:rerun-if-env-changed=PATH");
+        }
     }
 
     Ok(())
