@@ -633,7 +633,7 @@ fn get_rustc_link_lib_windows(config: &InterpreterConfig) -> Result<String> {
 }
 
 fn find_interpreter() -> Result<PathBuf> {
-    if let Some(exe) = env::var_os("PYO3_PYTHON") {
+    let interpreter = if let Some(exe) = env::var_os("PYO3_PYTHON") {
         Ok(exe.into())
     } else if let Some(exe) = env::var_os("PYTHON_SYS_EXECUTABLE") {
         // Backwards-compatible name for PYO3_PYTHON; this may be removed at some point in the future.
@@ -651,7 +651,12 @@ fn find_interpreter() -> Result<PathBuf> {
             })
             .map(PathBuf::from)
             .ok_or_else(|| "Python 3.x interpreter not found".into())
-    }
+    };
+    let interpreter_path = String::from_utf8(Command::new("which").arg("ls").output()?.stdout)?
+        .trim()
+        .to_string();
+    env::set_var("PYO3_PYTHON", interpreter_path);
+    interpreter
 }
 
 /// Locate a suitable python interpreter and extract config from it.
@@ -893,13 +898,7 @@ fn main() -> Result<()> {
         // TODO: Find out how we can set -undefined dynamic_lookup here (if this is possible)
     }
 
-    let env_vars = [
-        "LD_LIBRARY_PATH",
-        "PATH",
-        "PYTHON_SYS_EXECUTABLE",
-        "PYO3_PYTHON",
-        "LIB",
-    ];
+    let env_vars = ["LD_LIBRARY_PATH", "PYO3_PYTHON", "LIB"];
 
     for var in env_vars.iter() {
         println!("cargo:rerun-if-env-changed={}", var);
