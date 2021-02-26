@@ -1,3 +1,29 @@
+warning: the feature `specialization` is incomplete and may not be safe to use and/or cause compiler crashes
+ --> $DIR/lib.rs:1:12
+  |
+1 | #![feature(specialization)]
+  |            ^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(incomplete_features)]` on by default
+  = note: see issue #31844 <https://github.com/rust-lang/rust/issues/31844> for more information
+  = help: consider using `min_specialization` instead, which is more stable and complete
+
+warning: use of deprecated associated function `std::sync::atomic::AtomicBool::compare_and_swap`: Use `compare_exchange` or `compare_exchange_weak` instead
+   --> $DIR/type_object.rs:186:14
+    |
+186 |             .compare_and_swap(false, true, Ordering::Acquire)
+    |              ^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated associated function `std::sync::atomic::AtomicBool::compare_and_swap`: Use `compare_exchange` or `compare_exchange_weak` instead
+   --> $DIR/type_object.rs:222:14
+    |
+222 |             .compare_and_swap(false, true, Ordering::Acquire)
+    |              ^^^^^^^^^^^^^^^^
+
+warning: 3 warnings emitted
+
 error: Getter function can only have one argument of type pyo3::Python
  --> $DIR/invalid_property_args.rs:9:50
   |

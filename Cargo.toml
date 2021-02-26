@@ -19,7 +19,7 @@ travis-ci = { repository = "PyO3/pyo3", branch = "master" }
 appveyor = { repository = "fafhrd91/pyo3" }
 
 [dependencies]
-indoc = "0.3.4"
+indoc = "~1"
 inventory = "0.1.4"
 libc = "0.2.62"
 num-bigint = { version = "0.2", optional = true }
